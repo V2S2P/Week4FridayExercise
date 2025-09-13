@@ -13,5 +13,5 @@ public class ResponseDTO {
     private List<CityInfoDTO> cityInfoDTOList;
 
     @JsonProperty("hourly_units")
-    private WeatherInfoDTO weatherInfoDTOList;
+    private WeatherInfoDTO weatherInfoDTO;
 }

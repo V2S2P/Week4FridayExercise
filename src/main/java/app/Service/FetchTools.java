@@ -8,7 +8,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class FetchTools {
-
+    //General method for fetching API and parsing it into this class
     public <T> T getFromApi(String uri, Class<T> dtoClass) {
 
         ObjectMapper objectMapper = new ObjectMapper(); // Jackson prep
