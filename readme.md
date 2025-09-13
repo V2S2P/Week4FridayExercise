@@ -183,15 +183,16 @@ ActivityDTO savedActivity = activityDAO.createActivity(activityDTO);
 ActivityDTO savedActivity2 = activityDAO.createActivity(activityDTO2);
 ActivityDTO savedActivity3 = activityDAO.createActivity(activityDTO3);
 ```
-🚀 Final Flow (Big Picture)
+## 🚀 Final Flow (Big Picture)
+```plainText
 1. flowchart LR
 2. API[🌐 Open-Meteo API] -->|JSON| DTO[📦 DTOs]
 3. DTO --> Service[⚙️ Service Layer]
 4. Service --> DAO[🗄️ DAO]
 5. DAO --> Entity[🏛️ Entities]
 6. Entity --> DB[(💾 Database)]
-
-
+```
+```plainText
 1. Entities → Define database tables.
 
 2. DTOs → Match API JSON.
@@ -203,3 +204,4 @@ ActivityDTO savedActivity3 = activityDAO.createActivity(activityDTO3);
 5. Service → Orchestrate fetch + map + save.
 
 6. Main → Run the workflow.
+```
