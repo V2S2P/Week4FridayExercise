@@ -205,3 +205,61 @@ ActivityDTO savedActivity3 = activityDAO.createActivity(activityDTO3);
 
 6. Main → Run the workflow.
 ```
+## (OPTIONAL-ExecutorService(threadPools))
+
+To make things faster, using a threadpool and ExecutorService is a good way to make things faster.
+
+Normally calling fetchers like cityFetch.getCityInfo() and weatherFetch.getWeatherInfo() would have them run sequentially.
+So that means the program waits for the first HTTP request to finish.
+
+Using ExecutorService means we can create a thread pool so we can run tasks asynchronously in seperate threads.
+
+Example:
+```java
+Future<CityInfoDTO> cityFuture = executor.submit(() -> cityFetch.getCityInfo(cityName));
+Future<WeatherInfoDTO> weatherFuture = executor.submit(() -> {
+    CityInfoDTO city = cityFuture.get();
+    if (city != null) {
+        return weatherFetch.getWeatherInfo(city.getLatitude(), city.getLongitude());
+    }
+    return null;
+});
+```
+cityFuture starts fetching city info in one thread.
+
+weatherFuture is also submitted right away, but it waits (cityFuture.get()) before it can run.
+
+This pattern allows concurrency but ensures weather fetch only starts after city fetch succeeds.
+
+## What Future means
+🔹 What Future means
+
+A Future<T> is basically a promise of a result that will be available later.
+
+When you call executor.submit(task), it returns a Future.
+
+That Future doesn’t hold the result immediately (since the task might still be running).
+
+When you call future.get():
+
+If the task is done → you get the result immediately.
+
+If not → the call blocks until the result is ready.
+
+So in your code:
+
+cityFuture.get() → blocks until the city info is fetched.
+
+weatherFuture.get() → blocks until weather info is ready.
+
+## ✅ Summary For ExecutorService
+
+1. ExecutorService = manages threads so tasks can run in parallel.
+
+2. Future<T> = a handle to get the result later (blocks if not ready yet).
+
+3. In ActivityService, this improves performance by fetching city and weather in parallel.
+
+4. For small apps → executor inside the service is fine.
+
+5. For bigger apps → create the executor in main (or DI framework) and inject it into services.
